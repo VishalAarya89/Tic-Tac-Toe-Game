@@ -8,7 +8,7 @@
 ---
 
 ## ▶️ How to Play
-1. Open `index.html` in your browser.  
+1. Open `https://vishalaarya89.github.io/Tic-Tac-Toe-Game/` in your browser.  
 2. Player **X** starts first, followed by Player **O**.  
 3. Click on any empty cell to mark your symbol.  
 4. The game will automatically detect if someone wins or if the match ends in a draw.  
