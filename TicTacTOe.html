@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tic Tac Toe</title>
+  <!-- <link rel="stylesheet" href="ttt.css"> -->
+  <style>
+    body {
+      background: #1e1e2f;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 10px;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background-color: #2e2e3e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.2s ease;
+    }
+
+    .cell:hover {
+      background-color: #3e3e5e;
+    }
+
+    .cell.disabled {
+      pointer-events: none;
+      color: #aaa;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 1.3rem;
+    }
+
+    #restartBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ff5e5e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #restartBtn:hover {
+      background-color: #e04b4b;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tic Tac Toe</h1>
+  <div class="board" id="board"></div>
+  <div id="status">Player X's turn</div>
+  <button id="restartBtn">Restart Game</button>
+
+  <script>
+    const board = document.getElementById('board');
+    const statusDiv = document.getElementById('status');
+    const restartBtn = document.getElementById('restartBtn');
+
+    let currentPlayer = 'X';
+    let gameActive = true;
+    let boardState = ['', '', '', '', '', '', '', '', ''];
+
+    const winningConditions = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+      [0, 4, 8], [2, 4, 6]             // diagonals
+    ];
+
+    function checkWinner() {
+      for (const condition of winningConditions) {
+        const [a, b, c] = condition;
+        if (
+          boardState[a] &&
+          boardState[a] === boardState[b] &&
+          boardState[a] === boardState[c]
+        ) {
+          statusDiv.textContent = `Player ${boardState[a]} wins!`;
+          gameActive = false;
+          disableBoard();
+          return;
+        }
+      }
+
+      if (!boardState.includes('')) {
+        statusDiv.textContent = "It's a draw!";
+        gameActive = false;
+      }
+    }
+
+    function handleClick(index) {
+      if (!gameActive || boardState[index]) return;
+
+      boardState[index] = currentPlayer;
+      renderBoard();
+      checkWinner();
+
+      if (gameActive) {
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        statusDiv.textContent = `Player ${currentPlayer}'s turn`;
+      }
+    }
+
+    function renderBoard() {
+      board.innerHTML = '';
+      boardState.forEach((cell, index) => {
+        const div = document.createElement('div');
+        div.className = 'cell';
+        if (cell) div.classList.add('disabled');
+        div.textContent = cell;
+        div.addEventListener('click', () => handleClick(index));
+        board.appendChild(div);
+      });
+    }
+
+    function disableBoard() {
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach(cell => cell.classList.add('disabled'));
+    }
+
+    function restartGame() {
+      boardState = ['', '', '', '', '', '', '', '', ''];
+      currentPlayer = 'X';
+      gameActive = true;
+      statusDiv.textContent = `Player ${currentPlayer}'s turn`;
+      renderBoard();
+    }
+
+    restartBtn.addEventListener('click', restartGame);
+
+    renderBoard(); // Initial render
+  </script>
+  <!-- <link rel="stylesheet" href="ttt.js"> -->
+</body>
+</html>
