@@ -24,4 +24,4 @@
 ---
 
 ## 🏆 Credits
-Developed by **[Vishal Arya,chatGPT]** ✨  
+Developed by **[Vishal Arya, chatGPT]** ✨  
